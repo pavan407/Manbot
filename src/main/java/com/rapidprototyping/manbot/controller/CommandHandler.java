@@ -1,6 +1,7 @@
 package com.rapidprototyping.manbot.controller;
 
 import com.rapidprototyping.manbot.model.command.ArgumentLength;
+import com.rapidprototyping.manbot.model.user.UserType;
 
 /**
  *
@@ -12,7 +13,12 @@ public interface CommandHandler
 
     void handle(CommandContext ctx);
 
-    default ArgumentLength getArgumentLength()
+    default UserType getRequiredUserType()
+    {
+        return UserType.LEARNER;
+    }
+
+    default ArgumentLength getRequiredArgumentLength()
     {
         return ArgumentLength.anyLength();
     }

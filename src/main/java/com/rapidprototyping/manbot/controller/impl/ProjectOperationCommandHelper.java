@@ -33,7 +33,7 @@ public class ProjectOperationCommandHelper implements CommandHandler
     }
 
     @Override
-    public ArgumentLength getArgumentLength()
+    public ArgumentLength getRequiredArgumentLength()
     {
         return ArgumentLength.greaterThan(1);
     }

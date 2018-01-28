@@ -6,7 +6,6 @@ import com.rapidprototyping.manbot.controller.impl.HelpCommandHandler;
 import com.rapidprototyping.manbot.controller.impl.ProjectCommandHandler;
 import com.rapidprototyping.manbot.model.command.Command;
 import com.rapidprototyping.manbot.model.command.CommandParser;
-import net.dv8tion.jda.core.entities.Channel;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
@@ -68,7 +67,9 @@ public class CommandListener extends ListenerAdapter
         {
             ch.sendMessage(sender.getAsMention() + ", the requested command doesn't exist!").queue();
             return;
-        } else if (!handler.getArgumentLength().conformsByPolicy(cmd.getArgs().size()))
+        }
+        // TODO Compare required user type here
+        if (!handler.getRequiredArgumentLength().conformsByPolicy(cmd.getArgs().size()))
         {
             sendUsage(ch, sender, handler);
             return;
