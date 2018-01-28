@@ -1,6 +1,7 @@
 package com.rapidprototyping.manbot;
 
 import com.rapidprototyping.manbot.controller.CommandListener;
+import com.rapidprototyping.manbot.controller.NewUserListener;
 import com.rapidprototyping.manbot.model.command.SimpleCommandParser;
 import com.rapidprototyping.manbot.service.Service;
 import com.rapidprototyping.manbot.service.impl.TriviaService;
@@ -22,8 +23,11 @@ public class Manbot
     public static void main(String[] args) throws Exception
     {
         String token = System.getenv("MANBOT_TOKEN");
+        if (token == null || token.length() != 59)
+            throw new RuntimeException("JDA auth token doesn't exist as an environment variable");
+
         Manbot bot = new Manbot(token);
-        bot.addListener(new CommandListener(bot, new SimpleCommandParser()));
+        bot.registerListeners(new NewUserListener(), new CommandListener(bot, new SimpleCommandParser()));
         bot.scheduleService(new TriviaService());
     }
 
@@ -37,9 +41,9 @@ public class Manbot
                 .buildBlocking();
     }
 
-    public Manbot addListener(EventListener listener)
+    public Manbot registerListeners(EventListener... listeners)
     {
-        jda.addEventListener(listener);
+        jda.addEventListener(listeners);
         return this;
     }
 
