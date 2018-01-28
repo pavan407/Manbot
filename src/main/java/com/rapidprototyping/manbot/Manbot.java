@@ -21,7 +21,8 @@ public class Manbot
 {
     public static void main(String[] args) throws Exception
     {
-        Manbot bot = new Manbot("NDA1ODQ1OTM5NTEzODUxOTE3.DU1NXA.kKyyB4IWnC1dtAWHXy-ViBxSQ3s");
+        String token = System.getenv("MANBOT_TOKEN");
+        Manbot bot = new Manbot(token);
         bot.addListener(new CommandListener(bot, new SimpleCommandParser()));
         bot.scheduleService(new TriviaService());
     }
