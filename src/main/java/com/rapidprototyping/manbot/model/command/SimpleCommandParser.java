@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 /**
  *
- * @author Pavan C (pavan407)
+ * @author Nirodha
  */
 public class SimpleCommandParser implements CommandParser
 {
