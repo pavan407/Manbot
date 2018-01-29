@@ -21,6 +21,12 @@ public class RegexCommandParser implements CommandParser {
         }
     }
 
+    /**
+     *
+     * @param input should come in the form !<input> to be a valid command. If non-! characters are first, the isCommandCandidate method won't recognize the input as a command.
+     * @return
+     */
+
     @Override
     public Command parseCommand(String input) {
 
