@@ -2,6 +2,8 @@ package com.rapidprototyping.manbot.model.command;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -9,73 +11,48 @@ import java.util.List;
  */
 public class SimpleCommandParser implements CommandParser
 {
+    private Pattern pattern = Pattern.compile("[^\\s\"']+|\"([^\"]*)\"|'([^']*)'");
+
+    /**
+     *
+     * @param input must have at least one non-whitespace character
+     * @return determines whether or not the lead character of the input is a '!' character or not
+     */
     @Override
-    public boolean isCommandCandidate(String input)
-    {
-        return input.startsWith("!");
+    public boolean isCommandCandidate(String input) {
+        if(input==null || input.trim().length() == 0){
+            return false;
+        }else{
+            return input.trim().charAt(0) == '!';
+        }
     }
 
+    /**
+     *
+     * @param input should come in the form !<input> to be a valid command. If non-! characters are first, the isCommandCandidate method won't recognize the input as a command.
+     * @return
+     */
     @Override
-    public Command parseCommand(String input)
-    {
-        try
-        {
-            List<String> args = new ArrayList<>();
-            String name;
-            int nameIndex = input.indexOf(" ");
-            if (nameIndex == -1)
-                name = input.substring(1);
-            else
-            {
-                name = input.substring(1, nameIndex);
-                input = input.substring(nameIndex);
-                while (input != null)
-                {
-                    input = input.trim();
-                    if (input.length() <= 0)
-                        break;
+    public Command parseCommand(String input) {
 
-                    // String
-                    if (input.charAt(0) == '"')
-                    {
-                        String str;
-                        int strEndIndex = input.indexOf("\"", 1);
-                        if (strEndIndex == -1)
-                        {
-                            str = input;
-                            input = null;
-                        } else
-                        {
-                            str = input.substring(1, strEndIndex);
-                            input = input.substring(strEndIndex + 1);
-                        }
-                        args.add(str);
-                    }
-
-                    // Argument
-                    else
-                    {
-                        String arg;
-                        int argEndIndex = input.indexOf(" ");
-                        if (argEndIndex == -1)
-                        {
-                            arg = input;
-                            input = null;
-                        }
-                        else
-                        {
-                            arg = input.substring(0, argEndIndex);
-                            input = input.substring(argEndIndex);
-                        }
-                        args.add(arg);
-                    }
-                }
+        ArrayList<String> tokenizedMessage = new ArrayList<>();
+        Matcher regexMatcher;
+        regexMatcher = pattern.matcher(input);
+        while (regexMatcher.find()) {
+            if (regexMatcher.group(1) != null) {
+                // DQ_TOKEN
+                tokenizedMessage.add(regexMatcher.group(1));
+            } else if (regexMatcher.group(2) != null) {
+                // SQ_TOKEN
+                tokenizedMessage.add(regexMatcher.group(2));
+            } else {
+                // SIMPLE_TOKEN
+                tokenizedMessage.add(regexMatcher.group());
             }
-            return new Command(name, args);
-        } catch(Exception e)
-        {
-            e.printStackTrace();
-            return null;
         }
+        String name = tokenizedMessage.get(0);
+        tokenizedMessage.remove(0);
+        ArrayList<String> args = tokenizedMessage;
+        return new Command(name,tokenizedMessage);
     }
 }
