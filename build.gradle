@@ -1,40 +1,36 @@
-buildscript {
-	ext {
-		springBootVersion = '2.0.0.M7'
-	}
-	repositories {
-		mavenCentral()
-		maven { url "https://repo.spring.io/snapshot" }
-		maven { url "https://repo.spring.io/milestone" }
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
-}
-
-apply plugin: 'java'
-apply plugin: 'application'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-
-mainClassName = "com.rapidprototyping.manbot.Manbot"
-
-group = 'com.rapidprototyping'
+group = 'it.learnandcode'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
 
-repositories {
-    jcenter()
-	mavenCentral()
-	maven { url "https://repo.spring.io/snapshot" }
-	maven { url "https://repo.spring.io/milestone" }
+buildscript {
+    ext {
+        kotlinVersion = "1.2.21"
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+
+    repositories {
+        jcenter()
+    }
 }
 
+subprojects {
+    apply plugin: "java"
+    apply plugin: "kotlin"
+    sourceCompatibility = 1.8
 
-dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile 'net.dv8tion:JDA:3.5.0_327'
-	runtime('com.h2database:h2')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib"
+        compile "org.jetbrains.kotlin:kotlin-reflect"
+
+        compile "net.dv8tion:JDA:3.5.0_327"
+        compile "com.google.guava:guava:23.6-jre"
+
+        testCompile 'junit:junit:4.12'
+    }
+
+    repositories {
+        jcenter()
+    }
 }
