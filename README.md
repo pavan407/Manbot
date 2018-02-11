@@ -1,10 +1,10 @@
-#Manbot
+# Manbot
 An easily extensible [Discord](https://discordapp.com/ "Discord") bot.
 
-###Plugin support
+### Plugin support
 Currently, Manbot searches for plugins (class files) contained in the *plugins* project build output.
 
-####Creating a plugin
+#### Creating a plugin
 You can easily create a plugin class that will be dynamically loaded upon runtime by implementing the ```Plugin``` interface like so:
 ```java
 public class MyPlugin implements MyPlugin
@@ -52,5 +52,5 @@ public class TickTock extends Service
 }
 ```
 
-###Small Note for Developers
+### Small Note for Developers
 Since plugins are contained in their own Gradle module, you first need to build it before running the bot order for you to see your changes.
