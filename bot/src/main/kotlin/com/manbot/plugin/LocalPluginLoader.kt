@@ -1,6 +1,7 @@
 package com.manbot.plugin
 
 import com.manbot.util.FileUtils
+import java.io.File
 import java.net.MalformedURLException
 import java.net.URLClassLoader
 import java.nio.file.FileVisitResult
@@ -35,7 +36,8 @@ class LocalPluginLoader @Throws(MalformedURLException::class) constructor (val p
 
             // TODO Check file extension
             val classPath = FileUtils.removeExtension(
-                    FileUtils.removePath(filePath, pluginDirectory)).toString().replace("\\", ".")
+                    FileUtils.removePath(filePath, pluginDirectory)).toString()
+                    .replace(File.separator, ".")
 
             val clazz = classLoader.loadClass(classPath)
             if (!Plugin::class.java.isAssignableFrom(clazz))
