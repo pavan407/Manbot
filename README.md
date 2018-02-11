@@ -7,7 +7,7 @@ Currently, Manbot searches for plugins (class files) contained in the *plugins* 
 #### Creating a plugin
 You can easily create a plugin class that will be dynamically loaded upon runtime by implementing the ```Plugin``` interface like so:
 ```java
-public class MyPlugin implements MyPlugin
+public class MyPlugin implements Plugin
 {
 	@Override
 	public void onInit()
