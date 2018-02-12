@@ -16,6 +16,5 @@ abstract class CommandHandler @JvmOverloads constructor(
 {
     override fun onInit() = CommandHandlerCoordinator.applyCoordination(this)
 
-    @Throws(CommandException::class)
     abstract fun handle(event: CommandEvent)
 }

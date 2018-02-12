@@ -36,7 +36,7 @@ object Manbot
     fun main(vararg args: String)
     {
         // Init listeners
-        registerListeners(NewUserListener(), CommandListener(CommandParserImpl()))
+        registerListeners(CommandListener(CommandParserImpl()))
 
         // Load plugins
         submitTask(PluginLoadTask(LocalPluginLoader(

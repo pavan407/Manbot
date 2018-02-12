@@ -14,13 +14,17 @@ public class VoteCommandHandler extends CommandHandler
     }
 
     @Override
-    public void handle(CommandEvent event) throws CommandException
+    public void handle(CommandEvent event)
     {
         String name = event.getCommand().getNextArgument();
         String choice = event.getCommand().getNextArgument();
-
-        PollManager.get(event.getChannel(), name).submitVote(new User(), choice);
-        event.getChannel().sendMessage("Hey " + event.getUser().getAsMention()
-                + ", your vote has been submitted!").queue();
+        if (PollManager.exists(event.getChannel(), name))
+        {
+            PollManager.get(event.getChannel(), name).submitVote(new User(), choice);
+            event.getChannel().sendMessage("Hey " + event.getUser().getAsMention()
+                    + ", your vote has been submitted!").queue();
+        } else
+            event.getChannel().sendMessage(event.getUser().getAsMention()
+                    + ", we couldn't find that poll.").queue();
     }
 }

@@ -2,6 +2,7 @@ package com.manbot.command
 
 import com.manbot.Manbot
 import com.manbot.event.EventSubscriber
+import com.manbot.user.MessageFormattedException
 
 /**
  * @author Pavan C. (pavan407)
@@ -20,7 +21,7 @@ object CommandHandlerCoordinator : EventSubscriber<CommandEvent>, Iterable<Comma
         handlers.putIfAbsent(handler.name, handler)
     }
 
-    fun destroyCoordination(handler: CommandHandler) = handlers.remove(handler.name, handler)
+    fun removeCoordination(handler: CommandHandler) = handlers.remove(handler.name, handler)
 
     override fun subscribe(event: CommandEvent)
     {
@@ -31,7 +32,18 @@ object CommandHandlerCoordinator : EventSubscriber<CommandEvent>, Iterable<Comma
         if (handler != null && nameMod.equals(handler.name, true)
                 // TODO Check user type!
                 && handler.argumentAmount(event.command.amountOfArguments))
-            handler.handle(event)
+            try
+            {
+
+                handler.handle(event)
+            } catch(e: MessageFormattedException)
+            {
+                event.channel.sendMessage("${e.formattedMessage} ${event.user.asMention}!")
+            } catch(e: Exception)
+            {
+                // TODO Log the error
+                e.printStackTrace()
+            }
         else
             event.channel.sendMessage("Hey ${event.user.asMention}, the requested command wasn't found.").queue()
     }

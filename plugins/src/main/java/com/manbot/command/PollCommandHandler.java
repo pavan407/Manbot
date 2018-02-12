@@ -18,7 +18,7 @@ public class PollCommandHandler extends CommandHandler
     }
 
     @Override
-    public void handle(CommandEvent event) throws CommandException
+    public void handle(CommandEvent event)
     {
         Command cmd = event.getCommand();
         String op = cmd.getNextArgument();

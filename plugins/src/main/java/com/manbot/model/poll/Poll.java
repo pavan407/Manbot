@@ -1,17 +1,13 @@
 package com.manbot.model.poll;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Multimap;
 import com.manbot.Manbot;
+import com.manbot.user.MessageFormattedException;
 import com.manbot.user.User;
 import net.dv8tion.jda.core.entities.MessageChannel;
 
 import java.time.Duration;
-import java.time.temporal.TemporalUnit;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,14 +38,13 @@ public class Poll
     // TODO Switch to MessageFormattedExceptions
     public void submitVote(User voter, String choice)
     {
-        if (hasEnded())
-            throw new IllegalStateException("Poll has already ended");
+        checkIfActive();
         choice = choice.toLowerCase();
         if (!votes.containsKey(choice))
-            throw new IllegalArgumentException("Choice doesn't exist");
+            throw new MessageFormattedException("Choice doesn't exist", "That choice doesn't exist");
         for (User user : votes.get(choice))
             if (user == voter)
-                throw new IllegalArgumentException("User has already voted");
+                throw new MessageFormattedException("User has already voted", "You've already voted");
 
         votes.get(choice).add(voter);
     }
@@ -66,8 +61,7 @@ public class Poll
 
     public PollResults end()
     {
-        if (hasEnded())
-            throw new IllegalStateException("Poll has already ended");
+        checkIfActive();
 
         ended = true;
         return getResults();
@@ -105,7 +99,8 @@ public class Poll
 
     public void checkIfActive()
     {
-        Preconditions.checkArgument(isActive(), "Poll has already ended");
+        if (hasEnded())
+            throw new MessageFormattedException("Poll has already ended", "This poll's already ended");
     }
 
     public boolean hasEnded()
@@ -115,7 +110,8 @@ public class Poll
 
     private void checkIfEnded()
     {
-        Preconditions.checkArgument(hasEnded(), "Poll hasn't ended yet");
+        if (isActive())
+            throw new MessageFormattedException("Poll is still active", "This poll's still active");
     }
 
     public PollResults getResults()
