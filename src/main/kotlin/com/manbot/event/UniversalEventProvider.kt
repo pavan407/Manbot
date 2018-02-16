@@ -7,6 +7,7 @@ import kotlin.reflect.KClass
 /**
  * @author Pavan C. (pavan407)
  */
+@Suppress("UNCHECKED_CAST")
 class UniversalEventProvider<E : Event> : EventProvider<E>
 {
     private val subscribers = ArrayListMultimap.create<KClass<out E>, EventSubscriber<out E>>()

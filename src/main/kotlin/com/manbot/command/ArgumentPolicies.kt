@@ -3,7 +3,7 @@ package com.manbot.command
 /**
  * @author Pavan C. (pavan407)
  */
-object ArgumentAmount
+object ArgumentPolicies
 {
     @JvmStatic fun anyLength() = { _: Int -> true }
     @JvmStatic fun fixed(vararg fixes: Int) = { len: Int -> fixes.any { fix -> len == fix }.or(false) }

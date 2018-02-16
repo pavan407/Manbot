@@ -13,12 +13,12 @@ class CommandListener(private val parser: CommandParser) : ListenerAdapter()
     {
         val msg = event.message
         val ch = event.channel
-        val user = event.author
+        val member = event.member
         val input = msg.contentDisplay
         if (!parser.isCommandCandidate(input))
             return
 
         val cmd = parser.parseCommand(input)
-        Manbot.pulseEvent(CommandEvent(cmd, user, ch))
+        Manbot.pulseEvent(CommandEvent(cmd, member, ch))
     }
 }

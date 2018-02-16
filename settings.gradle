@@ -1,2 +1,2 @@
-include "bot", "plugins"
+include "plugins"
 

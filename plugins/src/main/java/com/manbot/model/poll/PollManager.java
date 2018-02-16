@@ -27,7 +27,14 @@ public final class PollManager implements EventSubscriber<PollMutationEvent>
 
     public static Poll get(MessageChannel ch, String name)
     {
+        if (polls.get(ch) == null)
+            return null;
         return polls.get(ch).get(name);
+    }
+
+    public static boolean exists(MessageChannel ch, String name)
+    {
+        return get(ch, name) != null;
     }
 
     public static Collection<Poll> getAll()

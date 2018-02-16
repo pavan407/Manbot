@@ -1,9 +1,13 @@
 package com.manbot.model.poll;
 
 import com.google.common.collect.ImmutableMap;
-import com.manbot.user.User;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Pavan C. (pavan407)
@@ -12,7 +16,7 @@ public final class PollResults implements Iterable<PollResult>
 {
     private final ImmutableMap<String, PollResult> results;
 
-    PollResults(ImmutableMap<String, Set<User>> votes)
+    PollResults(ImmutableMap<String, Set<Member>> votes)
     {
         ImmutableMap.Builder<String, PollResult> builder = ImmutableMap.builderWithExpectedSize(votes.keySet().size());
         votes.forEach((choice, voters) -> builder.put(choice, new PollResult(choice, voters)));

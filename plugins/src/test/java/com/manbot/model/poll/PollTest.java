@@ -20,17 +20,17 @@ public class PollTest
         PollManager.submit(p);
         serviceExecutor.scheduleWithFixedDelay(new PollService(), 0, 1, TimeUnit.SECONDS);
 
-//        p.submitVote(new User(), "choice1");
-//        p.submitVote(new User(), "choice1");
-//        p.submitVote(new User(), "choice1");
-//        p.submitVote(new User(), "choice1");
+//        p.submitVote(new UserDAO(), "choice1");
+//        p.submitVote(new UserDAO(), "choice1");
+//        p.submitVote(new UserDAO(), "choice1");
+//        p.submitVote(new UserDAO(), "choice1");
 //
-//        p.submitVote("choice2", new User());
-//        p.submitVote("choice2", new User());
+//        p.submitVote("choice2", new UserDAO());
+//        p.submitVote("choice2", new UserDAO());
 //
-//        p.submitVote("choice3", new User());
-//        p.submitVote("choice3", new User());
-//        p.submitVote("choice3", new User());
+//        p.submitVote("choice3", new UserDAO());
+//        p.submitVote("choice3", new UserDAO());
+//        p.submitVote("choice3", new UserDAO());
 
         while (true)
         {

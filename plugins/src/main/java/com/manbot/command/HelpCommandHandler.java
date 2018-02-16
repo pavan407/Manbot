@@ -19,7 +19,7 @@ public class HelpCommandHandler extends CommandHandler
                 cmds.append("!").append((handler).getName()).append("\t").append((handler).getDescription()).append("\t")
                         .append(handler.getUsage()).append("\n");
 
-        event.getChannel().sendMessage("Hey " + event.getUser().getAsMention()
+        event.getChannel().sendMessage("Hey " + event.getMember().getAsMention()
                 + ", here's a list of commands you can use with me\n" + cmds.toString()).queue();
     }
 }
