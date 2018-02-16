@@ -18,39 +18,49 @@ public class MyPlugin implements Plugin
 ```
 You can also extend off some wrapper classes for a solving a particular problem, which is often more convenient. Handling commands for example:
 ```java
+import com.manbot.command.*;
+import com.manbot.user.UserFriendlyException;
+
 public class MyCommandHandler extends CommandHandler
 {
     public MyCommandHandler()
     {
-        super("mycmd", "Description here", ArgumentAmount.anyLength(), UserType.LEARNER, "Usage here");
+        super("mycmd", 
+                "Description here", 
+                ArgumentPolicies.fixed(1), 
+                "[yourName]");
     }
 
     @Override
-    public void handle(CommandEvent event) throws CommandException
+    public void handle(CommandEvent event) throws UserFriendlyException
     {
-        event.getChannel().sendMessage(event.getUser().getAsMention() + " Hello world.").queue();
+        String name = event.getCommand().getNextArgument();
+
+        if (name.equals("pavan"))
+            throw new UserFriendlyException("Name is pavan", "You're not allowed to use this command");
+
+        event.getChannel().sendMessage("Hello " + name + ", " + event.getMember().getAsMention()).queue();
     }
 }
 ```
 Or performing a task every so often:
 ```java
-import java.util.concurrent.TimeUnit
+import com.manbot.task.Service;
 
-public class TickTock extends Service
+import java.util.concurrent.TimeUnit;
+
+public class MyService extends Service
 {
-	public TickTock()
-	{
-		super(1, TimeUnit.MINUTES);
-	}
+    public MyService()
+    {
+        super(1, 0, TimeUnit.MINUTES);
+    }
 
-	@Override
-	public void run()
-	{
-		// This will be executed once every minute
-		System.out.println("Tick tock...");
-	}
+    @Override
+    public void run()
+    {
+        // This will be executed once every minute
+        System.out.println("Tick tock...");
+    }
 }
 ```
-
-### Small Note for Developers
-Since plugins are contained in their own Gradle module, you first need to build it before running the bot order for you to see your changes.
