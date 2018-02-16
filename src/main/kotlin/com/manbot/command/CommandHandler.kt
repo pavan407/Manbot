@@ -1,7 +1,7 @@
 package com.manbot.command
 
 import com.manbot.plugin.Plugin
-import com.manbot.user.UserType
+import net.dv8tion.jda.core.entities.Role
 
 /**
  * @author Pavan C. (pavan407)
@@ -9,9 +9,9 @@ import com.manbot.user.UserType
 abstract class CommandHandler @JvmOverloads constructor(
         val name: String,
         val description: String = "N/A",
-        val argumentAmount: (Int) -> Boolean = ArgumentAmount.anyLength(),
-        val requiredUserType: UserType = UserType.LEARNER,
-        val usage: String = "N/A"
+        val requiredArgumentAmount: (Int) -> Boolean = ArgumentPolicies.anyLength(),
+        val usage: String = "N/A",
+        val requiredPermissions: (List<Role>) -> Boolean = { true }
 ) : Plugin
 {
     override fun onInit() = CommandHandlerCoordinator.applyCoordination(this)

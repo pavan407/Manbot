@@ -1,7 +1,8 @@
 package com.manbot.model.poll;
 
 import com.google.common.collect.ImmutableSet;
-import com.manbot.user.User;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 
 import java.util.Collection;
 
@@ -11,9 +12,9 @@ import java.util.Collection;
 public final class PollResult implements Comparable<PollResult>
 {
     private final String choice;
-    private final Collection<User> voters;
+    private final Collection<Member> voters;
 
-    PollResult(String choice, Collection<User> voters)
+    PollResult(String choice, Collection<Member> voters)
     {
         this.choice = choice;
         this.voters = ImmutableSet.copyOf(voters);
@@ -38,7 +39,7 @@ public final class PollResult implements Comparable<PollResult>
         return choice;
     }
 
-    public Collection<User> getVoters()
+    public Collection<Member> getVoters()
     {
         return voters;
     }

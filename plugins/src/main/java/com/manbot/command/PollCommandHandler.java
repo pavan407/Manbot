@@ -1,11 +1,14 @@
 package com.manbot.command;
 
+import com.manbot.model.Permissions;
 import com.manbot.model.poll.Poll;
 import com.manbot.model.poll.PollManager;
 
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.manbot.model.Permissions.MENTOR;
 
 /**
  * @author Pavan C. (pavan407)
@@ -14,7 +17,11 @@ public class PollCommandHandler extends CommandHandler
 {
     public PollCommandHandler()
     {
-        super("poll", "Poll operations.", ArgumentAmount.greaterThan(1));
+        super("poll",
+                "Poll operations",
+                ArgumentPolicies.greaterThan(1),
+                "[create/start] [name] [duration in minutes] [choices...]\n[end/stop] [name] [reason]",
+                Permissions.greaterThan(MENTOR));
     }
 
     @Override
@@ -33,7 +40,7 @@ public class PollCommandHandler extends CommandHandler
                 Poll poll = new Poll(name, event.getChannel(), duration, choices);
                 PollManager.submit(poll);
 
-                event.getChannel().sendMessage("Hey " + event.getUser().getAsMention()
+                event.getChannel().sendMessage("Hey " + event.getMember().getAsMention()
                         + ", the poll has been and has started.").queue();
             }
             case "end":

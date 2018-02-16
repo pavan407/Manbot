@@ -2,7 +2,7 @@ package com.manbot.command
 
 import com.manbot.Manbot
 import com.manbot.event.EventSubscriber
-import com.manbot.user.MessageFormattedException
+import com.manbot.user.UserFriendlyException
 
 /**
  * @author Pavan C. (pavan407)
@@ -29,23 +29,25 @@ object CommandHandlerCoordinator : EventSubscriber<CommandEvent>, Iterable<Comma
         val nameMod = event.command.name.substring(1)
 
         val handler = handlers[nameMod]
-        if (handler != null && nameMod.equals(handler.name, true)
-                // TODO Check user type!
-                && handler.argumentAmount(event.command.amountOfArguments))
+        if (handler == null)
+            event.channel.sendMessage("Hey ${event.member.asMention}, the requested command wasn't found.").queue()
+        else if (!handler.requiredPermissions(event.member.roles))
+            return
+        else if (!handler.requiredArgumentAmount(event.command.amountOfArguments))
+            event.channel.sendMessage("Hmm... You're missing some arguments  ${event.member.asMention}.").queue()
+        else
             try
             {
-
                 handler.handle(event)
-            } catch(e: MessageFormattedException)
+            } catch(e: UserFriendlyException)
             {
-                event.channel.sendMessage("${e.formattedMessage} ${event.user.asMention}!")
+                event.channel.sendMessage("${e.userFriendlyMessage} ${event.member.asMention}!").queue()
             } catch(e: Exception)
             {
+                event.channel.sendMessage("There was an error processing your input ${event.member.asMention}.").queue()
                 // TODO Log the error
                 e.printStackTrace()
             }
-        else
-            event.channel.sendMessage("Hey ${event.user.asMention}, the requested command wasn't found.").queue()
     }
 
     override fun iterator() = handlers.values.iterator()

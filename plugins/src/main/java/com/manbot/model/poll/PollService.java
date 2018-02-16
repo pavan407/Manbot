@@ -14,7 +14,7 @@ public class PollService extends Service implements EventSubscriber<PollMutation
 {
     public PollService()
     {
-        super(0, 1, TimeUnit.SECONDS);
+        super(1);
     }
 
     @Override

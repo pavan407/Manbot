@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 object Manbot
 {
     @JvmStatic
-    val jda: JDA = JDABuilder(AccountType.BOT).setToken(System.getenv("MANBOT_TOKEN")).buildBlocking()
+    lateinit var jda: JDA
 
     @JvmStatic
     val eventProvider: EventProvider<Event> = UniversalEventProvider()
@@ -33,17 +33,23 @@ object Manbot
     private val serviceExecutor = ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors())
 
     @JvmStatic
+    //@Throws(Exception::class)
     fun main(vararg args: String)
     {
-        // Init listeners
+        initJDA()
         registerListeners(CommandListener(CommandParserImpl()))
 
         // Load plugins
         submitTask(PluginLoadTask(LocalPluginLoader(
                 // TODO Get plugin dir from config
-                Paths.get("${System.getProperty(("user.dir"))}/../plugins/build/classes/java/main")))).get()
+                Paths.get("${System.getProperty(("user.dir"))}/plugins/build/classes/java/main")))).get()
 
         println("Manbot ready!")
+    }
+
+    private fun initJDA()
+    {
+        jda = JDABuilder(AccountType.BOT).setToken(System.getenv("MANBOT_TOKEN")).buildBlocking()
     }
 
     @JvmStatic
