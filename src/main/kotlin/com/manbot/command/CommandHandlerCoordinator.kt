@@ -34,7 +34,8 @@ object CommandHandlerCoordinator : EventSubscriber<CommandEvent>, Iterable<Comma
         else if (!handler.requiredPermissions(event.member.roles))
             return
         else if (!handler.requiredArgumentAmount(event.command.amountOfArguments))
-            event.channel.sendMessage("Hmm... You're missing some arguments  ${event.member.asMention}.").queue()
+            event.channel.sendMessage("Hmm... That doesn't look right. \"Try using !${event.command.name} -help\" "
+                    + "for more info, ${event.member.asMention}.").queue()
         else
             try
             {
